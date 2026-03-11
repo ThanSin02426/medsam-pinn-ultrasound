@@ -2,8 +2,6 @@
 
 An augmented foundation model architecture that integrates physical laws of acoustics—specifically the Eikonal equation and acoustic attenuation geometry—into the Medical Segment Anything Model (MedSAM). This modification drastically improves segmentation accuracy and eliminates clinical hallucinations on real-world ultrasound video.
 
-Developed at IIT Jammu by Manthan Singla.
-
 ---
 
 ## The Problem: Foundation Models are "Spatially Blind"
