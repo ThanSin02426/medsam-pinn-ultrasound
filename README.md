@@ -1,37 +1,26 @@
-# Physics-Informed MedSAM for Clinical Ultrasound
+# Physics-Informed MedSAM: Acoustic Attenuation for Clinical Ultrasound
 
-An augmented foundation model architecture that integrates physical laws of acoustics—specifically the Eikonal equation and acoustic attenuation geometry—into the Medical Segment Anything Model (MedSAM). This modification drastically improves segmentation accuracy and eliminates clinical hallucinations on real-world ultrasound video.
-
----
-
-## The Problem: Foundation Models are "Spatially Blind"
-Standard vision foundation models (such as ViT-B in MedSAM) treat medical ultrasound scans purely as arrays of pixel intensities, ignoring the physical mechanism of how sound waves generate the image. This leads to two critical failures in clinical applications:
-1.  **Geometric Fragmentation:** The model fails to understand tissue depth and boundary continuity.
-2.  **Shadow Hallucination:** Dense tissues (like bone) cause massive acoustic energy drop-offs (shadows). Standard models aggressively hallucinate false boundaries inside these empty shadows.
-
-This project solves both issues via custom Physics-Informed Neural Network (PINN) integrations.
+An augmented foundation model architecture that integrates the physical laws of acoustics—specifically acoustic attenuation geometry—into the Medical Segment Anything Model (MedSAM). This modification drastically improves segmentation accuracy and eliminates clinical hallucinations caused by acoustic shadows on real-world ultrasound video.
 
 ---
 
-## Phase 1: Spatial Awareness via Eikonal Loss
-To force the model to respect physical geometry and wavefront propagation, the architecture was adapted to predict a Signed Distance Function (SDF) rather than a simple binary mask. 
+## The Problem: Shadow Hallucination in Foundation Models
+Standard vision foundation models (such as ViT-B in MedSAM) treat medical ultrasound scans purely as arrays of pixel intensities, ignoring the physical mechanism of how sound waves generate the image. This leads to a critical failure in clinical applications:
 
-By enforcing the Eikonal equation ($|\nabla \tau| = 1/v$), the magnitude of the spatial gradient is constrained to equal exactly 1. This heavily penalizes fragmented, physically impossible shape predictions during training:
+**Acoustic Shadowing:** Dense tissues (like bone or thick fascia) cause massive acoustic energy drop-offs, leaving dark voids in the ultrasound scan. Because standard models have no physical context for signal loss, they aggressively hallucinate false anatomical boundaries inside these empty shadows.
 
-$$\mathcal{L}_{eikonal} = \mathbb{E}\left[(|\nabla \text{SDF}| - 1)^2\right]$$
-
-**Result:** The model successfully learned to act as a physical continuous space, producing smooth, continuous anatomical boundaries.
+This project solves this issue via a custom Physics-Informed Neural Network (PINN) integration.
 
 ---
 
-## Phase 2: The Acoustic Attenuation Layer
-To resolve the most challenging visual artifact in ultrasound—acoustic shadowing—a custom `AcousticAttenuationLayer` was engineered and injected directly into the mask decoder upscaling blocks of MedSAM.
+## The Solution: The Acoustic Attenuation Layer
+To resolve the visual artifact of acoustic shadowing, a custom `AcousticAttenuationLayer` was engineered and injected directly into the mask decoder upscaling blocks of MedSAM.
 
 Instead of guessing the semantics of black pixels, this layer actively models the physical loss of ultrasound signal along the depth axis (the Beer-Lambert Law) via a learned cumulative transmission map:
 
 $$T_{\text{cumulative}}(y) = \prod_{i=0}^{y} (1 - A_i)$$
 
-Where $A$ is the learned absorption fraction of the tissue at a given pixel. This mathematically simulates the exact mechanism that causes acoustic shadows, effectively teaching the model to dynamically suppress signals and ignore noise when looking "behind" dense objects.
+Where $A$ is the learned absorption fraction of the tissue at a given pixel. This mathematically simulates the exact mechanism that causes acoustic shadows, effectively teaching the model to dynamically suppress signals and correctly identify noise when looking "behind" dense objects.
 
 ---
 
