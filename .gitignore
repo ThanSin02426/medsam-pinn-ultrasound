@@ -1,0 +1,16 @@
+# Ignore model weights
+*.pth
+*.pt
+
+# Ignore virtual environments
+.venv/
+env/
+
+# Ignore massive datasets and videos
+medsam1/
+*.mp4
+*.avi
+
+# Ignore temporary cache
+__pycache__/
+*.pyc
