@@ -47,7 +47,7 @@ Below are examples of the PINN architecture outperforming the baseline foundatio
 
 **Visible Anatomy Segmentation (True Positives)**
 *When anatomy is present but obscured by acoustic noise, the PINN maps the true boundaries more accurately by actively calculating signal attenuation.*
-![Visible Anatomy Performance](comparison_results/Butterfly_b267_001.png)
+![Visible Anatomy Performance](comparison_results/Butterfly_b240_000.png)
 
 ---
 
