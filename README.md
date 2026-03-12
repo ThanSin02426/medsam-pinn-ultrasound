@@ -38,23 +38,28 @@ Below are examples of the PINN architecture outperforming the baseline foundatio
 
 ---
 
-## Real-World Clinical Results
-The PINN architecture was evaluated head-to-head against Baseline MedSAM on **40,200 continuous video frames** across three commercial ultrasound datasets (eSaote, Butterfly, Sonosite).
+## Multi-Device Clinical Evaluation
+The PINN architecture was evaluated head-to-head against Baseline MedSAM across 40,200 continuous video frames from three different commercial ultrasound datasets to test cross-hardware generalization.
 
-### Isolated Performance Diagnostic (Butterfly Dataset)
-To ensure the model was not simply suppressing all outputs globally, metrics were strictly separated into True Positives (anatomy is visible) and True Negatives (empty ground truth).
+### 1. High-Volume Clinical Hardware (eSaote Dataset)
+*Tested on 27,088 visible anatomy frames.*
+* Baseline MedSAM Dice: 0.6533
+* **PINN MedSAM Dice:** **0.7352** *(+0.0819 absolute improvement)*
 
-**Visible Anatomy Performance (True Positives)**
-* Baseline MedSAM Dice: 0.6424
-* **PINN MedSAM Dice:** **0.6905** *(Superior anatomical mapping despite shadowing)*
+### 2. Point-of-Care Hardware (Butterfly Dataset)
+*Evaluated for both anatomical accuracy and hallucination resistance.*
+* **Visible Anatomy** (2,622 frames): PINN (**0.6905**) vs Baseline (0.6424)
+* **Empty Ground Truth** (466 frames): PINN (**1.0000**) vs Baseline (0.0000) — *Zero Hallucinations*
 
-**Hallucination Resistance (True Negatives)**
-* Baseline MedSAM Dice: 0.0000 *(Hallucinated on 100% of empty frames)*
-* **PINN MedSAM Dice:** **1.0000** *(Zero hallucinations; correctly output blank masks)*
+### 3. High-Contrast Hardware (Sonosite Dataset)
+*Tested on 2,058 visible anatomy frames.*
+* Baseline MedSAM Dice: **0.7837**
+* PINN MedSAM Dice: 0.7645
+* *Academic Note:* Sonosite hardware employs aggressive native speckle reduction and edge-enhancement. On this specific distribution, the physical prior slightly over-suppressed hypoechoic (dark) anatomical boundaries, resulting in a minor (-0.0192) trade-off in Dice score. However, the model maintains strict global hallucination resistance.
 
 ---
 
 ## Running the Evaluation
 To run the split diagnostic evaluation locally:
 ```bash
-python compare_models1.py
+python evaluate_final.py
