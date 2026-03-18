@@ -59,7 +59,3 @@ The PINN architecture was evaluated head-to-head against Baseline MedSAM across 
 
 ---
 
-## Running the Evaluation
-To run the split diagnostic evaluation locally:
-```bash
-python evaluate_final.py
