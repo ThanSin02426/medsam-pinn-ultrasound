@@ -1,6 +1,6 @@
 # Physics-Informed MedSAM: Acoustic Attenuation for Clinical Ultrasound
 
-An augmented foundation model architecture that integrates the physical laws of acoustics—specifically acoustic attenuation geometry—into the Medical Segment Anything Model (MedSAM). This modification drastically improves segmentation accuracy and eliminates clinical hallucinations caused by acoustic shadows on real-world ultrasound video.
+An augmented foundation model architecture that integrates the physical laws of acoustics—specifically acoustic attenuation geometry—into the Medical Segment Anything Model (MedSAM). This modification drastically improves segmentation accuracy and eliminates clinical hallucinations caused by acoustic shadows on real-world ultrasound video data.
 
 ---
 
